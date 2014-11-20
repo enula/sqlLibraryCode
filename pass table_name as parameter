@@ -1,3 +1,5 @@
+
+SOL1:
 SELECT *
     FROM 
     school(
@@ -24,3 +26,25 @@ BEGIN
 RETURN;
 END;
 /
+
+
+
+
+SOL2 : 
+CREATE OR REPLACE PROCEDURE bank_search_sp
+(
+    p_tablename  IN  VARCHAR2,
+    p_searchname IN  VARCHAR2,
+    p_bankcode   OUT VARCHAR2,
+    p_bankname   OUT VARCHAR2,
+    p_dist_code  OUT NUMBER
+)
+AS
+    v_tem VARCHAR2(5000);
+BEGIN
+    v_tem := 'SELECT bankcode,bankname,dist_code FROM ' || UPPER (p_tablename) || '
+    WHERE bankname LIKE '''|| p_searchname||'''';
+    EXECUTE IMMEDIATE v_tem
+       INTO p_bankcode,p_bankname,p_dist_code
+      USING p_searchname ;
+END bank_search_sp;
