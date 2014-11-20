@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION concat_str (p_cursor IN  SYS_REFCURSOR)
+  RETURN  VARCHAR2
+IS
+  l_return  VARCHAR2(32767); 
+  l_temp    VARCHAR2(32767);
+BEGIN
+  LOOP
+    FETCH p_cursor
+    INTO  l_temp;
+    EXIT WHEN p_cursor%NOTFOUND;
+    l_return := l_return || ',' || l_temp;
+  END LOOP;
+  RETURN LTRIM(l_return, ',');
+END; 
