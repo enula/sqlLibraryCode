@@ -1,0 +1,26 @@
+SELECT *
+    FROM 
+    school(
+        CAST(
+            sf_get_max_division_salaries(
+                 CURSOR(SELECT * FROM hr.divisions),
+                 CURSOR(SELECT D.division_id, MAX(E.salary) 
+                          FROM hr.employees E, hr.departments D
+                         WHERE E.department_id = D.department_id
+                         GROUP BY D.division_id))
+            AS division_salary_t
+            )
+         );
+CREATE OR REPLACE FUNCTION sf_get_max_division_salaries(
+    arc_divisions   IN	hr.pkg_ref_cursors.divisions_rc
+   ,arc_salaries	IN	SYS_REFCURSOR
+)
+RETURN division_salary_t PIPELINED
+IS
+BEGIN
+. . .
+{function body}
+. . .
+RETURN;
+END;
+/
